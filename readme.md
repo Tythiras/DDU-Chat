@@ -7,7 +7,7 @@ Projektet er udviklet i node.js hvori jeg bruger express og socket io til web de
 For at køre det skal nodejs og npm installeres på computeren hvorefter man via en terminal kan køre projektet.
 Først skal modulerne hentes ned, dette gøres via
 `npm install`
-Hvorefter
+hvorefter
 `npm start`
-Kan køres og hjemmesiden kan tilgås via
+kan køres og hjemmesiden kan tilgås via
 `localhost:3000`
