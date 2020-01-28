@@ -1,0 +1,145 @@
+<div class="columns">
+  <div class="column is-3 conversations">
+  
+  </div>
+  <div class="column chat">
+    <div class="list">
+
+    </div>
+    <div class="bottom">
+      <form action="" onsubmit="return sendMessage()">
+        <div class="field">
+            <label class="label">Besked</label>
+            <div class="control">
+              <textarea class="input text-area" id="messageContent"></textarea>
+              <button class="button is-success">Send</button>
+              <a href="/logout" class="button is-info">Logud</a>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+let socket = io();
+
+//function
+function goToBottom() {
+  let list = document.querySelector('.list');
+  list.scrollTop = list.scrollHeight;
+}
+
+
+function sendMessage() {
+  let message = document.getElementById('messageContent')
+  if(message.value) {
+    socket.emit('newMessage', localStorage.getItem('curr'), message.value);
+  }
+  message.value = '';
+  return false;
+}
+function addConversation(id, userText, dateText, messageText, read, receiver) {
+  let card = document.createElement('div');
+  card.id = id;
+  if(read===0&&receiver==1) {
+    card.className = 'conversation unread'
+  } else {
+    card.className = 'conversation'
+  }
+  let user = document.createElement('p');
+  user.appendChild(document.createTextNode(userText));
+  card.appendChild(user)
+
+  let date = document.createElement('span');
+  let dateRepresent = new Date(dateText).toISOString();
+  date.appendChild(document.createTextNode(dateRepresent));
+  card.appendChild(date)
+
+  if(messageText) {
+    let message = document.createElement('p');
+    message.className = 'preview';
+    message.appendChild(document.createTextNode(messageText));
+    card.appendChild(message)
+  }
+  
+  let list = document.querySelector('.conversations');
+  list.appendChild(card);
+
+  card.onclick = clickConv;
+}
+function clickConv() {
+  chooseConversation(this.id);
+}
+function chooseConversation(id) {
+  document.querySelector('.chat .list').innerHTML = '';
+  let el = document.querySelector('.conversation.active')
+  if(el) {
+    el.classList.remove('active');
+  }
+  document.getElementById(id).classList.add('active');
+  document.getElementById(id).classList.remove('unread');
+
+  localStorage.setItem('curr', id);
+  socket.emit('getChat', id);
+}
+function addChat(message, date, receiver, read) {
+  let list = document.querySelector('.chat .list');
+  let card = document.createElement('div');
+  if(receiver) {
+    card.className = 'message receiver';
+  } else {
+    card.className = 'message sender';
+  }
+  card.title = date;
+
+  let content = document.createElement('p');
+  content.appendChild(document.createTextNode(message));
+  card.appendChild(content)
+
+  list.appendChild(card);
+}
+//socket events
+socket.on('message', function(message) {
+  let curr = localStorage.getItem('curr');
+  if(curr==message.senderID || curr==message.receiverID) {
+    addChat(message.message, message.creation, message.receiver, message.read);
+  } else {
+    document.getElementById(message.senderID).classList.add('unread');
+  }
+  let conv;
+  if(message.receiver==1) {
+    conv = document.getElementById(message.senderID);
+  } else {
+    conv = document.getElementById(message.receiverID);
+  }
+  conv.querySelector('.preview').innerHTML = message.message;
+  goToBottom();
+})
+socket.on('chat', function(messages) {
+  messages.forEach((message) => {
+    addChat(message.message, message.creation, message.receiver, message.read);
+  })
+  goToBottom();
+});
+socket.on('conversations', function(conversations) {
+  if(conversations.length > 0) {
+    conversations.forEach(function(conv) {
+      addConversation(conv.id, conv.email, conv.date, conv.message, conv.read, conv.receiver)
+    })
+  } else {
+    let card = document.createElement('div');
+    card.className = 'message is-danger';
+    card.innerHTML = '<div class="message-body">Der blev ikke fundet andre brugere!</div>'
+    let list = document.querySelector('.conversations');
+    list.appendChild(card);
+
+  }
+  
+  let curr = localStorage.getItem('curr');
+  if(curr) chooseConversation(curr);
+})
+</script>

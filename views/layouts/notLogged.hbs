@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Messages</title>
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/bulma.min.css">
+</head>
+<body>
+  {{#if error}}
+    <div class="message is-danger">
+      <div class="message-body">
+        {{error}}
+      </div>
+    </div>
+  {{/if}}
+  {{#if success}}
+    <div class="message is-success">
+      <div class="message-body">
+        {{success}}
+      </div>
+    </div>
+  {{/if}}
+  
+  <div class="container">
+	  {{{body}}}
+  </div>
+</body>
+</html>

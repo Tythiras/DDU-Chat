@@ -1,0 +1,26 @@
+{
+  "name": "dddatabase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "body-parser": "^1.19.0",
+    "bulma": "^0.8.0",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
+    "express-socket.io-session": "^1.3.5",
+    "handlebars": "^4.7.2",
+    "request": "^2.88.0",
+    "socket.io": "^2.3.0",
+    "sqlite3": "^4.1.1"
+  }
+}

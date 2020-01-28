@@ -1,0 +1,55 @@
+.container, .columns {
+    height: 100%;
+}
+.messages, .chat {
+    height: 100%;
+}
+.chat .list {
+    overflow-y: scroll;
+    height: calc(100% - 200px);
+}
+.chat .bottom {
+    height: 200px;
+}
+.chat .bottom textarea {
+    height: 6em;
+}
+.messages {
+    background: darkblue;
+    border: solid black 1px;
+
+}
+.chat {
+    background: white;
+    border: solid black 1px;
+}
+.conversation.unread {
+    color: red;
+}
+.conversation.active {
+    color: gray;
+}
+.conversation {
+    border-bottom: black 1px solid;
+}
+.chat .message {
+    white-space: pre-line;
+    display: inline-block;
+    width: 100%;
+}
+.chat .message p {
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+.chat .message.receiver p {
+    background-color: #e1e6f4;
+    float: left;
+}
+.chat .message.sender p {
+    background-color: #398cff;
+    color: white;
+}
+.chat .message.sender {
+    text-align: right;
+}
